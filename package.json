@@ -1,6 +1,6 @@
 {
   "name": "@volenday/input-phone-number",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "dist/index.min.js",
   "repository": "null",
   "author": "Rayan Feliciano <rayan.feliciano@volenday.com>",

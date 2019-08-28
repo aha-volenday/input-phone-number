@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import { CountryDropdown } from 'react-country-region-selector';
 import phone from 'phone';
 import InputDate from '@volenday/input-date';
+import { Button, Form, Input, Popover } from 'antd';
 
-// ant design
-import Button from 'antd/es/button';
-import Input from 'antd/es/input';
-import Popover from 'antd/es/popover';
+import './styles.css';
 
 export default class InputPhoneNumber extends Component {
 	initialState = { code: 'PH', hasChange: false, isPopoverVisible: false, localValue: '', isFocused: false };
@@ -149,38 +147,19 @@ export default class InputPhoneNumber extends Component {
 
 	render() {
 		const { hasChange } = this.state;
-		const { id, action, label = '', required = false, withLabel = false, historyTrack = false } = this.props;
+		const { action, historyTrack = false, label = '', required = false, withLabel = false } = this.props;
 
-		if (withLabel) {
-			if (historyTrack) {
-				return (
-					<div className="form-group">
-						<label for={id}>{required ? `*${label}` : label}</label>
-						{hasChange && action !== 'add' && this.renderPopover()}
-						{this.renderInput()}
-					</div>
-				);
-			}
+		const formItemCommonProps = {
+			colon: false,
+			label: withLabel ? label : false,
+			required
+		};
 
-			return (
-				<div className="form-group">
-					<label for={id}>{required ? `*${label}` : label}</label>
-					{this.renderInput()}
-				</div>
-			);
-		} else {
-			if (historyTrack) {
-				return (
-					<div class="form-group">
-						{hasChange && action !== 'add' && this.renderPopover()}
-						{this.renderInput()}
-					</div>
-				);
-			}
-
-			return this.renderInput();
-		}
-
-		return null;
+		return (
+			<Form.Item {...formItemCommonProps}>
+				{historyTrack && hasChange && action !== 'add' && this.renderPopover()}
+				{this.renderInput()}
+			</Form.Item>
+		);
 	}
 }

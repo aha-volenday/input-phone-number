@@ -4,7 +4,10 @@ import phone from 'phone';
 import InputDate from '@volenday/input-date';
 
 // ant design
-import { Button, Input, Popover } from 'antd';
+import Button from 'antd/es/button';
+import Input from 'antd/es/input';
+import Popover from 'antd/es/popover';
+
 export default class InputPhoneNumber extends Component {
 	initialState = { code: 'PH', hasChange: false, isPopoverVisible: false, localValue: '', isFocused: false };
 	state = { ...this.initialState, initialState: this.initialState };
@@ -37,7 +40,9 @@ export default class InputPhoneNumber extends Component {
 	};
 
 	handleChange = value => {
-		this.setState({ localValue: value, hasChange: true });
+		const { action } = this.props;
+
+		this.setState({ localValue: value, hasChange: action === 'add' ? false : true });
 	};
 
 	handlePopoverVisible = visible => {
@@ -49,6 +54,7 @@ export default class InputPhoneNumber extends Component {
 		const {
 			disabled = false,
 			id,
+			action,
 			label = '',
 			onChange,
 			placeholder = '',
@@ -63,7 +69,9 @@ export default class InputPhoneNumber extends Component {
 					<CountryDropdown
 						classes="form-control"
 						disabled={disabled}
-						onChange={e => this.setState({ hasChange: code !== e ? true : false, code: e })}
+						onChange={e =>
+							this.setState({ hasChange: action === 'add' ? false : code !== e ? true : false, code: e })
+						}
 						required={required}
 						value={code}
 						valueType="short"
@@ -141,14 +149,14 @@ export default class InputPhoneNumber extends Component {
 
 	render() {
 		const { hasChange } = this.state;
-		const { id, label = '', required = false, withLabel = false, historyTrack = false } = this.props;
+		const { id, action, label = '', required = false, withLabel = false, historyTrack = false } = this.props;
 
 		if (withLabel) {
 			if (historyTrack) {
 				return (
 					<div className="form-group">
 						<label for={id}>{required ? `*${label}` : label}</label>
-						{hasChange && this.renderPopover()}
+						{hasChange && action !== 'add' && this.renderPopover()}
 						{this.renderInput()}
 					</div>
 				);
@@ -164,7 +172,7 @@ export default class InputPhoneNumber extends Component {
 			if (historyTrack) {
 				return (
 					<div class="form-group">
-						{hasChange && this.renderPopover()}
+						{hasChange && action !== 'add' && this.renderPopover()}
 						{this.renderInput()}
 					</div>
 				);

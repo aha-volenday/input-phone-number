@@ -55,6 +55,7 @@ module.exports = {
 	externals: {
 		'@volenday/input-date': 'commonjs2 @volenday/input-date',
 		'cleave.js': 'commonjs2 cleave.js',
+		'react-dom': 'commonjs2 react-dom',
 		'react-country-region-selector': 'commonjs2 react-country-region-selector',
 		antd: 'commonjs2 antd',
 		react: 'commonjs2 react',

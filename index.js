@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { CountryDropdown } from 'react-country-region-selector';
 import phone from 'phone';
-import InputDate from '@volenday/input-date';
-import { Button, Form, Input, Popover } from 'antd';
+import { Form, Input } from 'antd';
 
 import './styles.css';
 
 export default class InputPhoneNumber extends Component {
-	initialState = { code: 'PH', hasChange: false, isPopoverVisible: false, localValue: '', isFocused: false };
+	initialState = { code: 'PH', localValue: '', isFocused: false };
 	state = { ...this.initialState, initialState: this.initialState };
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -19,7 +18,7 @@ export default class InputPhoneNumber extends Component {
 		// Resets equivalent value
 		if (prevState.localValue !== nextProps.value) {
 			// For Add
-			if (typeof nextProps.value === 'undefined' && !prevState.hasChange && !prevState.isFocused) {
+			if (typeof nextProps.value === 'undefined' && !prevState.isFocused) {
 				return { ...prevState.initialState };
 			}
 
@@ -38,13 +37,7 @@ export default class InputPhoneNumber extends Component {
 	};
 
 	handleChange = value => {
-		const { action } = this.props;
-
-		this.setState({ localValue: value, hasChange: action === 'add' ? false : true });
-	};
-
-	handlePopoverVisible = visible => {
-		this.setState({ isPopoverVisible: visible });
+		this.setState({ localValue: value });
 	};
 
 	renderInput() {
@@ -52,7 +45,6 @@ export default class InputPhoneNumber extends Component {
 		const {
 			disabled = false,
 			id,
-			action,
 			label = '',
 			onChange,
 			placeholder = '',
@@ -67,9 +59,7 @@ export default class InputPhoneNumber extends Component {
 					<CountryDropdown
 						classes="form-control"
 						disabled={disabled}
-						onChange={e =>
-							this.setState({ hasChange: action === 'add' ? false : code !== e ? true : false, code: e })
-						}
+						onChange={e => this.setState({ code: e })}
 						required={required}
 						value={code}
 						valueType="short"
@@ -111,43 +101,8 @@ export default class InputPhoneNumber extends Component {
 		);
 	}
 
-	renderPopover = () => {
-		const { isPopoverVisible } = this.state;
-		const { id, label = '', historyTrackValue = '', onHistoryTrackChange } = this.props;
-
-		return (
-			<Popover
-				content={
-					<InputDate
-						id={id}
-						label={label}
-						required={true}
-						withTime={true}
-						withLabel={true}
-						value={historyTrackValue}
-						onChange={onHistoryTrackChange}
-					/>
-				}
-				trigger="click"
-				title="History Track"
-				visible={isPopoverVisible}
-				onVisibleChange={this.handlePopoverVisible}>
-				<span class="float-right">
-					<Button
-						type="link"
-						shape="circle-outline"
-						icon="warning"
-						size="small"
-						style={{ color: '#ffc107' }}
-					/>
-				</span>
-			</Popover>
-		);
-	};
-
 	render() {
-		const { hasChange } = this.state;
-		const { action, historyTrack = false, label = '', required = false, withLabel = false } = this.props;
+		const { label = '', required = false, withLabel = false } = this.props;
 
 		const formItemCommonProps = {
 			colon: false,
@@ -155,11 +110,6 @@ export default class InputPhoneNumber extends Component {
 			required
 		};
 
-		return (
-			<Form.Item {...formItemCommonProps}>
-				{historyTrack && hasChange && action !== 'add' && this.renderPopover()}
-				{this.renderInput()}
-			</Form.Item>
-		);
+		return <Form.Item {...formItemCommonProps}>{this.renderInput()}</Form.Item>;
 	}
 }

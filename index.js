@@ -6,38 +6,11 @@ import { Form, Input } from 'antd';
 import './styles.css';
 
 export default class InputPhoneNumber extends Component {
-	initialState = { code: 'PH', localValue: '', isFocused: false };
-	state = { ...this.initialState, initialState: this.initialState };
-
-	static getDerivedStateFromProps(nextProps, prevState) {
-		// Set initial localValue
-		if (nextProps.value && !prevState.localValue) {
-			return { ...prevState, localValue: nextProps.value };
-		}
-
-		// Resets equivalent value
-		if (prevState.localValue !== nextProps.value) {
-			// For Add
-			if (typeof nextProps.value === 'undefined' && !prevState.isFocused) {
-				return { ...prevState.initialState };
-			}
-
-			// For Edit
-			if (!prevState.isFocused) {
-				return { ...prevState.initialState, localValue: nextProps.value };
-			}
-		}
-
-		return null;
-	}
+	state = { code: 'PH', localValue: '' };
 
 	getPhoneNumber = (value, code) => {
 		const mobile = phone(value, code);
 		return mobile.length ? mobile[0] : value;
-	};
-
-	handleChange = value => {
-		this.setState({ localValue: value });
 	};
 
 	renderInput() {
@@ -46,7 +19,9 @@ export default class InputPhoneNumber extends Component {
 			disabled = false,
 			id,
 			label = '',
+			onBlur = () => {},
 			onChange,
+			onPressEnter = () => {},
 			placeholder = '',
 			required = false,
 			styles = {},
@@ -76,25 +51,13 @@ export default class InputPhoneNumber extends Component {
 						size="large"
 						style={styles}
 						type="text"
-						onBlur={e => {
-							const mobile = this.getPhoneNumber(e.target.value, code);
-							if (mobile != value) onChange(id, this.state.localValue);
-
-							this.setState({ isFocused: false });
-						}}
+						onBlur={onBlur}
 						onChange={e => {
 							const mobile = this.getPhoneNumber(e.target.value, code);
-							if (this.state.localValue != '' && e.target.value == '') onChange(id, mobile);
-							this.handleChange(mobile);
+							onChange({ target: { name: id, value: mobile } }, id, mobile);
 						}}
-						onFocus={e => {
-							this.setState({ isFocused: true });
-						}}
-						onPressEnter={e => {
-							onChange(id, this.getPhoneNumber(e.target.value, code));
-							return true;
-						}}
-						value={this.state.localValue || ''}
+						onPressEnter={onPressEnter}
+						value={value ? value : ''}
 					/>
 				</div>
 			</div>

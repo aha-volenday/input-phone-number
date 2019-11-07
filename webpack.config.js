@@ -53,12 +53,12 @@ module.exports = {
 		libraryTarget: 'commonjs2'
 	},
 	externals: {
-		'cleave.js': 'commonjs2 cleave.js',
-		'react-dom': 'commonjs2 react-dom',
-		'react-country-region-selector': 'commonjs2 react-country-region-selector',
-		antd: 'commonjs2 antd',
-		react: 'commonjs2 react',
-		phone: 'commonjs2 phone'
+		'cleave.js': 'cleave.js',
+		'react-dom': 'react-dom',
+		'react-country-region-selector': 'react-country-region-selector',
+		antd: 'antd',
+		react: 'react',
+		phone: 'phone'
 	},
 	plugins: [
 		new webpack.optimize.AggressiveMergingPlugin(),

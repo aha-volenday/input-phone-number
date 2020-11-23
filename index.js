@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { CountryDropdown } from 'react-country-region-selector';
 import phone from 'phone';
-import { Form, Input } from 'antd';
+import { Form, Skeleton } from 'antd';
 
 import './styles.css';
+
+const browser = typeof process.browser !== 'undefined' ? process.browser : true;
 
 export default class InputPhoneNumber extends Component {
 	state = { code: 'PH', localValue: '' };
@@ -14,6 +16,8 @@ export default class InputPhoneNumber extends Component {
 	};
 
 	renderInput() {
+		const { Input } = require('antd');
+
 		const { code } = this.state;
 		const {
 			disabled = false,
@@ -79,6 +83,14 @@ export default class InputPhoneNumber extends Component {
 			required
 		};
 
-		return <Form.Item {...formItemCommonProps}>{this.renderInput()}</Form.Item>;
+		return (
+			<Form.Item {...formItemCommonProps}>
+				{browser ? (
+					this.renderInput()
+				) : (
+					<Skeleton active paragraph={{ rows: 1, width: '100%' }} title={false} />
+				)}
+			</Form.Item>
+		);
 	}
 }

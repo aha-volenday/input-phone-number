@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { CountryDropdown } from 'react-country-region-selector';
-import phone from 'phone';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+
 import { Form, Skeleton } from 'antd';
 
 import './styles.css';
@@ -8,17 +9,7 @@ import './styles.css';
 const browser = typeof process.browser !== 'undefined' ? process.browser : true;
 
 export default class InputPhoneNumber extends Component {
-	state = { code: 'PH', localValue: '' };
-
-	getPhoneNumber = (value, code) => {
-		const mobile = phone(value, code);
-		return mobile.length ? mobile[0] : value;
-	};
-
 	renderInput() {
-		const { Input } = require('antd');
-
-		const { code } = this.state;
 		const {
 			disabled = false,
 			id,
@@ -34,33 +25,22 @@ export default class InputPhoneNumber extends Component {
 
 		return (
 			<div class="row">
-				<div class="col-md-2 col-sm-2 col-2">
-					<CountryDropdown
-						classes="form-control"
-						disabled={disabled}
-						onChange={e => this.setState({ code: e })}
-						required={required}
-						value={code}
-						valueType="short"
-					/>
-				</div>
-				<div class="col-md-10 col-sm-8 col-10">
-					<Input
-						allowClear
+				<div class="col-md-12 col-sm-10 col-10">
+					<PhoneInput
 						autoComplete="off"
+						country="ph"
 						disabled={disabled}
+						enableSearch={true}
+						inputStyle={{ width: '100%' }}
 						name={id}
-						placeholder={placeholder || label || id}
-						required={required}
-						size="large"
-						style={styles}
-						type="text"
 						onBlur={onBlur}
-						onChange={e => {
-							const mobile = this.getPhoneNumber(e.target.value, code);
-							onChange({ target: { name: id, value: mobile } }, id, mobile);
+						onChange={phone => {
+							onChange({ target: { name: id, value: phone } }, id, phone);
 						}}
 						onPressEnter={onPressEnter}
+						placeholder={placeholder || label || id}
+						required={required}
+						searchPlaceholder="Search country"
 						value={value ? value : ''}
 					/>
 				</div>

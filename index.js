@@ -3,9 +3,9 @@ import { CountryDropdown } from 'react-country-region-selector';
 import phone from 'phone';
 import { Form, Skeleton } from 'antd';
 
-import './styles.css';
+const browser = typeof window !== 'undefined' ? true : false;
 
-const browser = typeof process.browser !== 'undefined' ? process.browser : true;
+if (browser) require('./styles.css');
 
 export default class InputPhoneNumber extends Component {
 	state = { code: 'PH', localValue: '' };

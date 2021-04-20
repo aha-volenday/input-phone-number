@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { CountryDropdown } from 'react-country-region-selector';
 import phone from 'phone';
-import { Form, Skeleton } from 'antd';
+import { Form, Skeleton, Tooltip } from 'antd';
 
 const browser = typeof window !== 'undefined' ? true : false;
 
@@ -29,10 +29,11 @@ export default class InputPhoneNumber extends Component {
 			placeholder = '',
 			required = false,
 			styles = {},
+			toolTip = {},
 			value = ''
 		} = this.props;
 
-		return (
+		const input = (
 			<div class="row">
 				<div class="col-md-2 col-sm-2 col-2">
 					<CountryDropdown
@@ -66,6 +67,8 @@ export default class InputPhoneNumber extends Component {
 				</div>
 			</div>
 		);
+
+		return Object.keys(toolTip).length === 0 ? input : <Tooltip {...toolTip}>{input}</Tooltip>;
 	}
 
 	render() {

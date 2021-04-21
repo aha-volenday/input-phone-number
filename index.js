@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { CountryDropdown } from 'react-country-region-selector';
 import phone from 'phone';
 import { Form, Skeleton, Tooltip } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 const browser = typeof window !== 'undefined' ? true : false;
 
@@ -29,11 +30,10 @@ export default class InputPhoneNumber extends Component {
 			placeholder = '',
 			required = false,
 			styles = {},
-			toolTip = {},
 			value = ''
 		} = this.props;
 
-		const input = (
+		return (
 			<div class="row">
 				<div class="col-md-2 col-sm-2 col-2">
 					<CountryDropdown
@@ -67,18 +67,24 @@ export default class InputPhoneNumber extends Component {
 				</div>
 			</div>
 		);
-
-		return Object.keys(toolTip).length === 0 ? input : <Tooltip {...toolTip}>{input}</Tooltip>;
 	}
 
 	render() {
-		const { extra = null, label = '', required = false, withLabel = false } = this.props;
+		const { extra = null, label = '', required = false, withLabel = false, toolTip = '' } = this.props;
 
 		const formItemCommonProps = {
 			colon: false,
 			label: withLabel ? (
 				<>
-					<div style={{ float: 'right' }}>{extra}</div> <span class="label">{label}</span>
+					<div style={{ float: 'right' }}>{extra}</div>
+					<span class="label">
+						{label}{' '}
+						{toolTip && (
+							<Tooltip title={toolTip}>
+								<QuestionCircleOutlined />
+							</Tooltip>
+						)}
+					</span>
 				</>
 			) : (
 				false

@@ -69,9 +69,9 @@ export default class InputPhoneNumber extends Component {
 	}
 
 	render() {
-		const { extra = null, label = '', required = false, withLabel = false } = this.props;
+		const { extra = null, inlineError = true, label = '', required = false, withLabel = false } = this.props;
 
-		const formItemCommonProps = {
+		let formItemCommonProps = {
 			colon: false,
 			label: withLabel ? (
 				<>
@@ -82,6 +82,7 @@ export default class InputPhoneNumber extends Component {
 			),
 			required
 		};
+		if (inlineError) formItemCommonProps = { ...formItemCommonProps, help: error ? error : '' };
 
 		return (
 			<Form.Item {...formItemCommonProps}>
